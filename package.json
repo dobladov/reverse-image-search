@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "bunx surge dist --domain https://reverse-image-search.surge.sh"
   },
   "dependencies": {
     "normalize.css": "8.0.1",
