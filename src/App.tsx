@@ -1,4 +1,3 @@
-
 import { useCallback, useState } from 'react'
 
 import 'normalize.css';
@@ -45,9 +44,8 @@ export const App = () => {
 
   const [searchImage, setSearchImage] = useState<string | null>(imageUrl)
 
-  const manualUpload = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const localImage = (e.currentTarget.elements.namedItem('localImage') as HTMLInputElement).files?.[0];
+  const manualUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const localImage = (e.target as HTMLInputElement).files?.[0];
     if (localImage) {
       upload(localImage);
     }
@@ -91,17 +89,17 @@ export const App = () => {
 
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleDragOver = useCallback((e) => {
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
   }, []);
 
-  const handleDragLeave = useCallback((e) => {
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
   }, []);
 
-  const handleDrop = useCallback((e) => {
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
 
@@ -118,31 +116,33 @@ export const App = () => {
       <div
         className='dropzone'
         style={{
-          backgroundColor: isDragging ? 'lightblue' : '',
+          backgroundColor: isDragging ? '#646cff' : '',
         }}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
           <p>Drag and drop your image here</p>
-          <p>Or</p>
-          <form className="manualUpload" onSubmit={manualUpload}>
-            <input type="file" name="localImage"  />
-            <input type="submit" value="Upload to Catbox.moe" />
-        </form>
       </div>
 
-      <div>
-        <p>Or</p>
-        <input
-          className='urlInput'
-          placeholder='Image URL https:// or http://'
-          type="search"
-          name='imageUrl'
-          onChange={setInputUrl}
-          defaultValue={imageUrl || ''}
-        />
-      </div>
+      <p>Or</p>
+      <input
+        type="file"
+        name="localImage"
+        accept="image/*" 
+        onChange={manualUpload}
+      />
+      
+      <p>Or</p>
+      <input
+        className='urlInput'
+        placeholder='Image URL https:// or http://'
+        type="search"
+        name='imageUrl'
+        onChange={setInputUrl}
+        defaultValue={imageUrl || ''}
+      />
+      
       {
         isValid && (
           <div className='results'>
